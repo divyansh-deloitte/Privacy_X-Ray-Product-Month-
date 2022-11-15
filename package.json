@@ -1,12 +1,12 @@
 {
-  "name": "react-chrome-extension",
+  "name": "privacy_x_ray",
   "version": "1.0.0",
-  "description": "react chrome extension template",
+  "description": "This chrome extensions logs all the background communication happening while accessing a webpage.",
   "scripts": {
     "start": "webpack --watch --progress --config webpack.dev.js",
     "build": "webpack --watch --progress --config webpack.prod.js"
   },
-  "author": "",
+  "author": "Divyansh_Dharamveer_Ashish",
   "devDependencies": {
     "@types/chrome": "0.0.128",
     "@types/react": "^17.0.0",

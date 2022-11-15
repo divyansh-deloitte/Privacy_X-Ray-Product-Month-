@@ -1,6 +1,6 @@
 {
-  "name": "React Extension",
-  "description": "Chrome Extension in React!",
+  "name": "Privacy X-Ray",
+  "description": "This chrome extensions logs all the background communication happening while accessing a webpage.",
   "version": "1.0.0",
   "manifest_version": 3,
   "icons": {
@@ -10,7 +10,7 @@
   },
   "action": {
     "default_popup": "popup.html",
-    "default_title": "React Extension",
+    "default_title": "Privacy X-Ray",
     "default_icon": "icon.png"
   },
   "permissions": ["storage"],
