@@ -13,7 +13,7 @@
     "default_title": "Privacy X-Ray",
     "default_icon": "icon.png"
   },
-  "permissions": ["storage"],
+  "permissions": ["storage","tabs","scripting","activeTab"],
   "options_page": "options.html",
   "background": {
     "service_worker": "background.js"
@@ -23,5 +23,8 @@
       "matches": ["<all_urls>"],
       "js": ["contentScript.js"]
     }
+  ],
+  "host_permissions": [
+    "<all_urls>"
   ]
 }

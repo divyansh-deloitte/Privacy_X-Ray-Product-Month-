@@ -1,3 +1,47 @@
-body {
-  background-color: #1c1c1c;
+html,body{
+  height:500px;
+  width:500px;
+}
+
+span{
+  height: 100px;
+  width: 100px;
+  margin: 5px;
+}
+
+.permission-btn-state-default{
+  border: none;
+  margin: 0px 5px;
+  background: #646369;
+  border-radius: 6px;
+  color: white;
+  font-size: 14px;
+  line-height: 33px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.permission-btn-state-denied{
+  border: none;
+  margin: 0px 5px;
+  background: #ca2813;
+  border-radius: 6px;
+  color: white;
+  font-size: 14px;
+  line-height: 33px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+
+.permission-btn-state-granted{
+  border: none;
+  margin: 0px 5px;
+  background: #3ee215;
+  border-radius: 6px;
+  color: rgb(0, 0, 0);
+  font-size: 14px;
+  line-height: 33px;
+  transition: all 0.3s ease;
+  cursor: pointer;
 }
