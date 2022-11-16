@@ -9,13 +9,20 @@ const App= () => {
   const [ locationPermission, setLocationPermission ] = useState("");
   
   useEffect(()=>{
+  
+    
     console.log("Response from background should print here!!")
     chrome.tabs.query({active: true, currentWindow: true},(tabs) => {
-      console.log("popup js");
-      chrome.tabs.sendMessage(tabs[0].id, {action: "popup_click"})
+      console.log("Sent msg to get data from popup.js");
+      chrome.runtime.sendMessage( {action: "popup_load"})
+
+      //chrome.tabs.sendMessage(tabs[0].id, {action: "popup_click"})
+      //chrome.tabs.sendMessage(tabs[0].id, {action: "popup_click"})
+
     })
   },[])
-
+ 
+    
 
   chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if(request.action == "msgTransfer"){
