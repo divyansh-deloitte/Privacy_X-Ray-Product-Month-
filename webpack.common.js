@@ -5,9 +5,9 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 module.exports = {
   entry: {
-    popup: path.resolve("src/popup/popup.tsx"),
+    popup: path.resolve("src/popup/popup.jsx"),
     options: path.resolve("src/options/options.tsx"),
-    background: path.resolve("src/background/background.ts"),
+    background: path.resolve("src/background/background.js"),
     contentScript: path.resolve("src/contentScript/contentScript.ts"),
   },
   module: {
@@ -25,10 +25,15 @@ module.exports = {
         test: /\.(jpg|jpeg|png|woff|woff2|eot|ttf|svg)$/,
         type: "asset/resource",
       },
+      {
+        test: /\.jsx?$/,
+        use: "babel-loader",
+        exclude: /node_modules/
+      }
     ],
   },
   resolve: {
-    extensions: [".tsx", ".ts", ".js"],
+    extensions: [".tsx", ".ts", ".js",".jsx"],
   },
   plugins: [
     new CleanWebpackPlugin({
