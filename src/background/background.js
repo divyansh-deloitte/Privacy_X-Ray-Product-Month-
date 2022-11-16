@@ -1,7 +1,7 @@
 
 async function getPermission(){
   let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-  console.log("Activated")
+
   chrome.scripting.executeScript({
       target: { tabId: tab.id },
       function: checkPermissions
@@ -9,29 +9,32 @@ async function getPermission(){
 }
 
 async function checkPermissions(){
-  console.log("hellowwwwww")
 
-  var cameraPermission = null;
-  var microphonePermission = null;
-  var locationPermission = null;
+  try{
+      const cameraPermission = await navigator.permissions.query({name: 'camera'})
+      // console.log("camera state", cPermission.state);
+    
+      const  microphonePermission = await navigator.permissions.query({name: 'microphone'})
+      // console.log("microphone state", mPermission.state);
+      
+      const locationPermission = await navigator.permissions.query({name: 'geolocation'})
+      chrome.runtime.sendMessage({
+        action: "msgTransfer",
+        permissions:  {
+          cameraPermission: cameraPermission.state,
+          microphonePermission:microphonePermission.state,
+          locationPermission: locationPermission.state
+        }
+      }).then((msg) => {
+      })
+      .catch((e) => {
+        console.log("Not able to send permissions to Popup.js",e);
+      });
 
-  const cPermission = await navigator.permissions.query({name: 'camera'})
-  console.log("camera state", cPermission.state);
-  cameraPermission = cPermission.state;
-  
-  const mPermission = await navigator.permissions.query({name: 'microphone'})
-  console.log("microphone state", mPermission.state);
-  microphonePermission = mPermission.state;
-
-  const lPermission = await navigator.permissions.query({name: 'geolocation'})
-  locationPermission=lPermission.state;
-  console.log("geolocation state", lPermission.state);
-  
-
-  chrome.runtime.sendMessage({
-    action: "msgTransfer",
-    permissions:  {cameraPermission,microphonePermission,locationPermission}
-  })
+  }catch(e){
+    console.log("Some error occured while fetching permissions")
+  }
+ 
   // chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   //   console.log("msg recieved in background.js inside content script" )
   //   if(request.action == "popup_click"){
@@ -44,15 +47,15 @@ async function checkPermissions(){
   // })
 
 }
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
-  console.log("msg recieved in background.js")
+try{
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if(request.action == "popup_load"){
-    console.log("action got")
     getPermission()
-    
   }
 })
-
+}catch(e){
+  console.log("Cannot inject content script!!:",e)
+}
 //1- State not updating when hitting a url
 //2-
