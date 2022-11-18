@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "@babel/preset-env": "^7.20.2",
-    "babel-loader": "^9.1.0"
+    "babel-loader": "^9.1.0",
+    "react-chartjs-2": "^4.3.1"
   }
 }
