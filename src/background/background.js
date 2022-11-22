@@ -82,13 +82,13 @@ chrome.webRequest.onBeforeRequest.addListener(
       }
       // console.log(details);
       // console.log(details.type);
+      totalRequests += 1;
+      console.log("totalRequests:", totalRequests);
       if (details.type in requestCountMapping[activeTab]) {
         requestCountMapping[activeTab][details.type] += 1;
       } else {
         requestCountMapping[activeTab].other += 1;
       }
-
-      console.log(requestCountMapping[activeTab]);
     }
   },
   { urls: ["<all_urls>"] }
@@ -110,26 +110,27 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   }
 });
 
-chrome.webNavigation.onCommitted.addListener((details) => {
-  if (["reload"].includes(details.transitionType)) {
-    // codeAfterReload();
-    console.log("After Page reloaded");
-    requestCountMapping[activeTab] = {
-      script: 0,
-      stylesheet: 0,
-      image: 0,
-      xmlhttprequest: 0,
-      other: 1,
-    };
-    console.log(requestCountMapping[activeTab]);
-    // If you want to run only when the reload finished (at least the DOM was loaded)
-    chrome.webNavigation.onCompleted.addListener(function onComplete() {
-      // codeAfterReloadAndFinishSomeLoading();
-      console.log("After page reloaded and loaded!!");
-      chrome.webNavigation.onCompleted.removeListener(onComplete);
-    });
-  }
-});
+// chrome.webNavigation.onCommitted.addListener((details) => {
+//   if (["reload"].includes(details.transitionType)) {
+//     // codeAfterReload();
+//     console.log("After Page reloaded", totalRequests);
+//     requestCountMapping[activeTab] = {
+//       script: 0,
+//       stylesheet: 0,
+//       image: 0,
+//       xmlhttprequest: 0,
+//       other: 1,
+//     };
+//     totalRequests = 0;
+//     console.log(requestCountMapping[activeTab]);
+//     // If you want to run only when the reload finished (at least the DOM was loaded)
+//     chrome.webNavigation.onCompleted.addListener(function onComplete() {
+//       // codeAfterReloadAndFinishSomeLoading();
+//       console.log("After page reloaded and loaded!!", totalRequests);
+//       // chrome.webNavigation.onCompleted.removeListener(onComplete);
+//     });
+//   }
+// });
 
 //document==main_frame
 //script

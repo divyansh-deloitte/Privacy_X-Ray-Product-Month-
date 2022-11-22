@@ -17,6 +17,12 @@ const App = () => {
     xmlhttprequest: 0,
     other: 1,
   });
+
+  console.log(
+    "total rescources:",
+    window.performance.getEntriesByType("resource").length
+  );
+
   const [totalRequests, setTotalRequests] = useState(0);
   const labels = ["Javascript", "Design", "Images", "Requests", "Other"];
   const data = {
