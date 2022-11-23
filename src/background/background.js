@@ -65,17 +65,13 @@ try {
 var activeTab = -1;
 var requestCountMapping = {};
 var totalRequests = 0;
-var allRequestUrls = {};
 chrome.tabs.onActivated.addListener(function (details) {
   activeTab = details.tabId;
 });
 chrome.webRequest.onBeforeRequest.addListener(
   function (details) {
     if (details.tabId == activeTab) {
-      if (
-        !(activeTab in requestCountMapping) ||
-        !(activeTab in allRequestUrls)
-      ) {
+      if (!(activeTab in requestCountMapping)) {
         requestCountMapping[activeTab] = {
           script: 0,
           stylesheet: 0,
@@ -83,13 +79,11 @@ chrome.webRequest.onBeforeRequest.addListener(
           xmlhttprequest: 0,
           other: 0,
         };
-
-        allRequestUrls[activeTab] = [];
       }
-      allRequestUrls[activeTab].push(details.url);
+      // console.log(details);
+      // console.log(details.type);
       totalRequests += 1;
-      // console.log("totalRequests:", totalRequests);
-      // console.log("Urls ", allRequestUrls);
+      console.log("totalRequests:", totalRequests);
       if (details.type in requestCountMapping[activeTab]) {
         requestCountMapping[activeTab][details.type] += 1;
       } else {
@@ -102,18 +96,16 @@ chrome.webRequest.onBeforeRequest.addListener(
 
 chrome.tabs.onRemoved.addListener((details) => {
   delete requestCountMapping[details];
-  delete allRequestUrls[details];
-  // console.log("Updated dictionary after deleting:", requestCountMapping);
+  console.log("Updated dictionary after deleting:", requestCountMapping);
 });
 // chrome.tabs.onUpdated.addListener((details) => {
 //   console.log("Page updated!", details);
 // });
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action == "popup_load") {
-    console.log("data sent to fe");
     chrome.runtime.sendMessage({
       action: "requestTransfer",
-      data: { requestCount: requestCountMapping, activeTab, allRequestUrls },
+      data: { requestCount: requestCountMapping, activeTab },
     });
   }
 });
@@ -139,11 +131,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 //     });
 //   }
 // });
-
-// async function checkUrl(url) {
-//   let result = await request(url);
-//   console.log("Url is", result);
-// }
 
 //document==main_frame
 //script

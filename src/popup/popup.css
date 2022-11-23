@@ -50,3 +50,30 @@ h3 {
   color: rgb(62, 61, 61);
   font-size: 20px;
 }
+table tr td{
+  padding: 5px;
+}
+
+table { 
+  word-break: break-all;
+  overflow: hidden;
+  border-collapse: collapse;
+  overflow-y: scroll;
+  overflow-x: scroll;
+  height:200px;
+  margin:20px;
+  white-space: nowrap;
+  table-layout: fixed;
+  text-align: left;
+  border: 1px solid;
+  margin:20px;
+}
+
+#tablearea{
+  word-break: break-all;
+  overflow: hidden;
+  overflow-y: scroll;
+  height:300px;
+  white-space: nowrap;
+}
+

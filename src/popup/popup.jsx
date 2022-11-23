@@ -3,7 +3,6 @@ import { render } from "react-dom";
 import "./popup.css";
 import Chart from "chart.js/auto";
 import { Bar } from "react-chartjs-2";
-import { request } from "malicious-link-detector";
 // import { BarChart } from "../chart/Chart";
 
 const App = () => {
@@ -11,9 +10,6 @@ const App = () => {
   const [microphonePermission, setMicrophonePermission] = useState("");
   const [locationPermission, setLocationPermission] = useState("");
   const [activeTab, setActiveTab] = useState(-1);
-  const [allRequestUrls, setAllRequestUrls] = useState([]);
-  const [suspiciousLink, setSuspiciousLink] = useState(0);
-
   const [allRequestCount, setAllRequestCount] = useState({
     script: 0,
     stylesheet: 0,
@@ -22,15 +18,13 @@ const App = () => {
     other: 1,
   });
 
+  console.log(
+    "total rescources:",
+    window.performance.getEntriesByType("resource").length
+  );
+
   const [totalRequests, setTotalRequests] = useState(0);
-  const labels = [
-    "Javascript",
-    "Design",
-    "Images",
-    "Requests",
-    "Other",
-    "Suspicious",
-  ];
+  const labels = ["Javascript", "Design", "Images", "Requests", "Other"];
   const data = {
     labels: labels,
     datasets: [
@@ -42,15 +36,10 @@ const App = () => {
           "rgba(53, 162, 235, 0.5)",
           "rgba(255, 206, 86, 0.2)",
           "rgba(153, 102, 255, 0.2)",
-          "red",
         ],
         borderColor: "rgb(255, 99, 132)",
         borderWidth: 1,
-        data:
-          allRequestCount == undefined ||
-          Object.keys(allRequestCount).length == 0
-            ? []
-            : [...Object.values(allRequestCount), suspiciousLink],
+        data: allRequestCount ? Object.values(allRequestCount) : [],
       },
     ],
   };
@@ -63,30 +52,7 @@ const App = () => {
       },
     },
   };
-
-  async function checkUrl(url) {
-    let result = await request(url);
-    return result;
-  }
-
-  useEffect(() => {
-    console.log("Inside useEffect");
-    if (allRequestUrls && allRequestUrls.length !== 0) {
-      allRequestUrls.forEach((url) => {
-        checkUrl(url)
-          .then((ans) => {
-            //ans=="Suspicious"||ans=="Dangerous"
-            if (ans == "Suspicious" || ans == "Dangerous") {
-              setSuspiciousLink((prevValue) => (prevValue += 1));
-            }
-            // console.log(ans);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      });
-    }
-  }, [allRequestUrls]);
+  useEffect(() => {}, [allRequestCount]);
   useEffect(() => {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       chrome.runtime
@@ -103,6 +69,8 @@ const App = () => {
   try {
     chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       if (request.action == "msgTransfer") {
+        console.log("permission print");
+
         setCameraPermission(request.permissions.cameraPermission);
         setMicrophonePermission(request.permissions.microphonePermission);
         setLocationPermission(request.permissions.locationPermission);
@@ -111,26 +79,25 @@ const App = () => {
   } catch (e) {
     console.log("Cannot fetch permission from background.js", e);
   }
-  try {
-    chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-      if (request.action == "requestTransfer") {
-        setAllRequestUrls(request.data.allRequestUrls[request.data.activeTab]);
-        setActiveTab(request.data.activeTab);
-        setAllRequestCount(request.data.requestCount[request.data.activeTab]);
-        request.data.requestCount[request.data.activeTab] == undefined ||
-        Object.keys(request.data.requestCount[request.data.activeTab]).length ==
+
+  chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    if (request.action == "requestTransfer") {
+      console.log(
+        "Request Count is:",
+        request.data.requestCount,
+        request.data.activeTab
+      );
+
+      setActiveTab(request.data.activeTab);
+      setAllRequestCount(request.data.requestCount[request.data.activeTab]);
+      setTotalRequests(
+        Object.values(request.data.requestCount[request.data.activeTab]).reduce(
+          (a, b) => a + b,
           0
-          ? ""
-          : setTotalRequests(
-              Object.values(
-                request.data.requestCount[request.data.activeTab]
-              ).reduce((a, b) => a + b, 0)
-            );
-      }
-    });
-  } catch (e) {
-    console.log("Something went wrong while recieving requests");
-  }
+        )
+      );
+    }
+  });
   return (
     <div>
       <h3>Permissions</h3>
@@ -184,6 +151,53 @@ const App = () => {
         <br />
         <Bar data={data} options={options} />
       </div>
+      
+      <h2>Cookies</h2>
+      <strong>Count<span id="cookie-counter"></span></strong>
+      <button id='clear-all-cookie-btn'>Clear All</button>
+      <button id='hide-table-btn'>Show/Hide</button>
+
+      <div>
+        Enter Domain: <input type="text" id="inputDomain" name="domainname"/>
+        <button id='delete-cookie-btn'>Delete</button>
+      </div>
+
+      
+     
+        <h2>Filter Cookies</h2>
+
+       <button id='analytics-cookies'>Analytics/Marketing</button>
+       <button id='tracking-cookies'>Information/Tracking</button>
+
+
+
+       <div id="tablearea">
+      </div>
+       
+
+  
+{/* 
+      <div>
+      <table id="cookies-view-table">
+        <thead id="table-header">
+              <tr>
+                  <th>Domain</th>
+                  <th>Name</th>
+                  <th>Secure</th>
+                  <th>Value</th>
+              </tr>
+              
+       </thead>
+   <tbody>
+
+  </tbody>
+  </table>
+  </div> */}
+  <p id="message"></p>
+
+      
+      
+      
     </div>
   );
 };

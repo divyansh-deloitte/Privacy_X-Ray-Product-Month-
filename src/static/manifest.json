@@ -19,7 +19,8 @@
     "scripting",
     "activeTab",
     "webRequest",
-    "webNavigation"
+    "webNavigation",
+    "cookies"
   ],
   "options_page": "options.html",
   "background": {
