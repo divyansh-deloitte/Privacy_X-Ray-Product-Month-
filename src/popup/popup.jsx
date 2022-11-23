@@ -107,6 +107,7 @@ const App= () => {
         tr.appendChild( document.createElement('td') );
 
         var button = document.createElement('button'); 
+        
         var bText = document.createTextNode('X');  
         button.appendChild(bText);
         // button.onclick = deleteraw
