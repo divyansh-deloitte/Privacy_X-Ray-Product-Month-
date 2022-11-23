@@ -13,7 +13,7 @@
     "default_title": "Privacy X-Ray",
     "default_icon": "icon.png"
   },
-  "permissions": ["storage","tabs","scripting","activeTab"],
+  "permissions": ["storage","tabs","scripting","activeTab","cookies"],
   "options_page": "options.html",
   "background": {
     "service_worker": "background.js"

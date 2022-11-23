@@ -51,7 +51,7 @@ async function checkPermissions(){
 try{
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if(request.action == "popup_load"){
-    getPermission()
+    getPermission();
   }
 })
 }catch(e){
@@ -59,3 +59,18 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 }
 //1- State not updating when hitting a url
 //2-
+
+
+
+
+
+
+//
+//Cookies code//
+//
+
+
+
+
+  
+  
