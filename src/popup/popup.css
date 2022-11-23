@@ -1,18 +1,20 @@
-html,body{
-  height:500px;
-  width:500px;
+html,
+body {
+  height: 550px;
+  width: 500px;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
-span{
+span {
   height: 100px;
   width: 100px;
   margin: 5px;
 }
 
-.permission-btn-state-default{
+.permission-btn-state-default {
   border: none;
   margin: 0px 5px;
-  background: #646369;
+  background: #b2b2b2;
   border-radius: 6px;
   color: white;
   font-size: 14px;
@@ -21,10 +23,10 @@ span{
   cursor: pointer;
 }
 
-.permission-btn-state-denied{
+.permission-btn-state-denied {
   border: none;
   margin: 0px 5px;
-  background: #ca2813;
+  background: #e97777;
   border-radius: 6px;
   color: white;
   font-size: 14px;
@@ -33,21 +35,21 @@ span{
   cursor: pointer;
 }
 
-
-.permission-btn-state-granted{
+.permission-btn-state-granted {
   border: none;
   margin: 0px 5px;
-  background: #3ee215;
+  background: #5f8d4e;
   border-radius: 6px;
-  color: rgb(0, 0, 0);
+  color: white;
   font-size: 14px;
   line-height: 33px;
   transition: all 0.3s ease;
   cursor: pointer;
 }
-
-
-
+h3 {
+  color: rgb(62, 61, 61);
+  font-size: 20px;
+}
 table tr td{
   padding: 5px;
 }
@@ -74,3 +76,4 @@ table {
   height:300px;
   white-space: nowrap;
 }
+

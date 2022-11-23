@@ -28,6 +28,8 @@
   },
   "dependencies": {
     "@babel/preset-env": "^7.20.2",
-    "babel-loader": "^9.1.0"
+    "babel-loader": "^9.1.0",
+    "malicious-link-detector": "^1.6.2",
+    "react-chartjs-2": "^4.3.1"
   }
 }

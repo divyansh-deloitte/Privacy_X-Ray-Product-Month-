@@ -28,12 +28,12 @@ module.exports = {
       {
         test: /\.jsx?$/,
         use: "babel-loader",
-        exclude: /node_modules/
-      }
+        exclude: /node_modules/,
+      },
     ],
   },
   resolve: {
-    extensions: [".tsx", ".ts", ".js",".jsx"],
+    extensions: [".tsx", ".ts", ".js", ".jsx"],
   },
   plugins: [
     new CleanWebpackPlugin({
